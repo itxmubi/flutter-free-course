@@ -1,16 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
 
@@ -33,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Register"),
       ),
       body: FutureBuilder(
           future: Firebase.initializeApp(),
@@ -58,18 +57,11 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                       final email = emailController.text;
                       final password = passwordController.text;
-                      try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: email, password: password);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == "user-not-found") {
-                          if (kDebugMode) {
-                            print("user not foundd");
-                          }
-                        }
-                      }
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: email, password: password);
                     },
-                    child: const Text("Login"),
+                    child: const Text("Register"),
                   )
                 ]);
               default:
